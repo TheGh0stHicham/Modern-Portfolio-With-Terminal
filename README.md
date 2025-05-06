@@ -2,7 +2,7 @@
 
 Un portfolio web moderne et interactif avec un terminal style macOS qui permet aux visiteurs d'explorer vos compétences, projets et informations de manière ludique et originale.
 
-![Aperçu du Portfolio]([https://via.placeholder.com/800x400?text=Portfolio+Preview](https://i.ibb.co/fZWBtg9/Screenshot-2025-05-06-112503.png))
+![Aperçu du Portfolio](https://i.ibb.co/fZWBtg9/Screenshot-2025-05-06-112503.png)
 
 ## 🌟 Fonctionnalités
 
