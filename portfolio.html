@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Moderne</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #4B5FF7;
+            --secondary: #FF4B91;
+            --dark: #0F1730;
+            --light: #F8F9FA;
+            --terminal-bg: #1D2029;
+            --terminal-text: #D8DEE9;
+            --terminal-green: #99C794;
+            --terminal-blue: #6699CC;
+            --terminal-red: #EC5F67;
+            --terminal-yellow: #FAC863;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        section {
+            padding: 5rem 10%;
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            position: relative;
+            background: linear-gradient(135deg, #F5F7FA 0%, #E8ECF1 100%);
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(75, 95, 247, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(255, 75, 145, 0.05) 0%, transparent 20%);
+            z-index: 0;
+        }
+        
+        .profile-container {
+            flex: 1;
+            min-width: 300px;
+            max-width: 450px;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .profile-image {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+        
+        .profile-desc {
+            text-align: center;
+        }
+        
+        .profile-desc h3 {
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .profile-desc p {
+            color: #6C757D;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .terminal-container {
+            flex: 1;
+            min-width: 350px;
+            max-width: 600px;
+            z-index: 1;
+        }
+        
+        .terminal {
+            background-color: var(--terminal-bg);
+            border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 350px;
+        }
+        
+        .terminal-header {
+            background: #2D323D;
+            padding: 0.7rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .terminal-buttons {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .terminal-close {
+            background-color: #FF5F57;
+        }
+        
+        .terminal-minimize {
+            background-color: #FFBD2E;
+        }
+        
+        .terminal-maximize {
+            background-color: #28C840;
+        }
+        
+        .terminal-title {
+            color: #AAAFBB;
+            font-size: 0.8rem;
+            font-family: 'Space Mono', monospace;
+        }
+        
+        .terminal-body {
+            flex: 1;
+            padding: 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--terminal-text);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .terminal-line {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+        
+        .terminal-prompt {
+            color: var(--terminal-green);
+            margin-right: 0.5rem;
+            flex-shrink: 0;
+        }
+        
+        .terminal-user {
+            color: var(--terminal-blue);
+        }
+        
+        .terminal-at {
+            color: var(--terminal-text);
+        }
+        
+        .terminal-machine {
+            color: var(--terminal-yellow);
+        }
+        
+        .terminal-path {
+            color: var(--terminal-yellow);
+            margin-right: 0.5rem;
+        }
+        
+        .command-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--terminal-text);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.95rem;
+            width: 100%;
+            caret-color: var(--terminal-text);
+        }
+        
+        .terminal-output {
+            padding-left: 1.8rem;
+            color: var(--terminal-text);
+        }
+        
+        .typing-container {
+            display: inline-block;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background-color: var(--terminal-text);
+            margin-left: 2px;
+            animation: blink 1s step-end infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            font-weight: 700;
+            position: relative;
+            color: var(--dark);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        /* Experience Section */
+        .experience {
+            background-color: white;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background-color: #E9ECEF;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            opacity: 0;
+        }
+        
+        .timeline-item.reveal {
+            opacity: 1;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: white;
+            border: 3px solid var(--primary);
+            top: 20px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+        
+        .timeline-content {
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-date {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-desc {
+            color: #6C757D;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            background-color: #F8F9FA;
+        }
+        
+        .testimonials-container {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            flex: 1;
+            min-width: 280px;
+            max-width: 400px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .testimonial-card.reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            color: #6C757D;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .testimonial-text::before {
+            content: '"';
+            font-size: 4rem;
+            position: absolute;
+            top: -30px;
+            left: -10px;
+            color: #E9ECEF;
+            font-family: serif;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .testimonial-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        
+        .testimonial-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .testimonial-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .testimonial-role {
+            font-size: 0.8rem;
+            color: #6C757D;
+        }
+        
+        /* Education */
+        .education {
+            background-color: white;
+        }
+        
+        .education-container {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .education-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary);
+            flex: 1;
+            min-width: 280px;
+            max-width: 400px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .education-card.reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .education-date {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .education-degree {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .education-school {
+            color: #6C757D;
+            margin-bottom: 0.5rem;
+        }
+        
+        .education-desc {
+            color: #6C757D;
+            font-size: 0.9rem;
+        }
+        
+        /* Contact Form */
+        .contact {
+            background: linear-gradient(135deg, #F5F7FA 0%, #E8ECF1 100%);
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #E9ECEF;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(75, 95, 247, 0.2);
+        }
+        
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3A4FDA;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(75, 95, 247, 0.3);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+            color: #ADB5BD;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            section {
+                padding: 4rem 5%;
+            }
+            
+            .timeline::after {
+                left: 40px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 80px;
+                padding-right: 20px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-item::after {
+                left: 30px;
+                right: auto;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+            
+            .profile-container, .terminal-container {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="profile-container">
+            <div class="profile-image">
+                <img src="/api/placeholder/400/400" alt="Profile Image">
+            </div>
+            <div class="profile-desc">
+                <h3>John Doe</h3>
+                <p>Développeur Web Créatif</p>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        
+        <div class="terminal-container">
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="terminal-button terminal-close"></div>
+                        <div class="terminal-button terminal-minimize"></div>
+                        <div class="terminal-button terminal-maximize"></div>
+                    </div>
+                    <div class="terminal-title">bash - portfolio</div>
+                </div>
+                <div class="terminal-body" id="terminal-body">
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">
+                            <span class="terminal-user">user</span>
+                            <span class="terminal-at">@</span>
+                            <span class="terminal-machine">portfolio</span>
+                            <span class="terminal-path">~</span>
+                            <span>$</span>
+                        </span>
+                        <span id="starting-text"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Experience Section -->
+    <section class="experience" id="experience">
+        <h2 class="section-title">Expérience</h2>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2022 - Présent</div>
+                    <h3 class="timeline-title">Développeur Senior - TechCorp</h3>
+                    <p class="timeline-desc">Développement d'applications web réactives, création d'interfaces utilisateur intuitives et optimisation des performances.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2019 - 2022</div>
+                    <h3 class="timeline-title">Développeur Frontend - WebStudio</h3>
+                    <p class="timeline-desc">Conception et développement d'interfaces utilisateur innovantes pour des clients variés, utilisation des dernières technologies web.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2017 - 2019</div>
+                    <h3 class="timeline-title">Développeur Junior - StartupXYZ</h3>
+                    <p class="timeline-desc">Collaboration au développement d'une application SaaS, implémentation de fonctionnalités et correction de bugs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <h2 class="section-title">Témoignages</h2>
+        
+        <div class="testimonials-container">
+            <div class="testimonial-card">
+                <p class="testimonial-text">John a transformé notre vision en une réalité numérique exceptionnelle. Son expertise et sa créativité ont fait toute la différence dans notre projet.</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-image">
+                        <img src="/api/placeholder/100/100" alt="Client 1">
+                    </div>
+                    <div>
+                        <div class="testimonial-name">Marie Dubois</div>
+                        <div class="testimonial-role">CEO, DigitalFuture</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <p class="testimonial-text">Travailler avec John a été une expérience incroyable. Il a su comprendre nos besoins et y répondre avec des solutions innovantes.</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-image">
+                        <img src="/api/placeholder/100/100" alt="Client 2">
+                    </div>
+                    <div>
+                        <div class="testimonial-name">Thomas Martin</div>
+                        <div class="testimonial-role">Directeur Marketing, TechInno</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <p class="testimonial-text">Un professionnel dévoué avec un œil pour le détail. John a dépassé nos attentes à tous les niveaux. Je le recommande vivement !</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-image">
+                        <img src="/api/placeholder/100/100" alt="Client 3">
+                    </div>
+                    <div>
+                        <div class="testimonial-name">Sophie Bernard</div>
+                        <div class="testimonial-role">Fondatrice, CreativeMinds</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Education Section -->
+    <section class="education" id="education">
+        <h2 class="section-title">Formation</h2>
+        
+        <div class="education-container">
+            <div class="education-card">
+                <div class="education-date">2015 - 2017</div>
+                <h3 class="education-degree">Master en Développement Web</h3>
+                <p class="education-school">Université de Technologie</p>
+                <p class="education-desc">Spécialisation en développement d'applications web modernes et technologies front-end avancées.</p>
+            </div>
+            
+            <div class="education-card">
+                <div class="education-date">2012 - 2015</div>
+                <h3 class="education-degree">Licence en Informatique</h3>
+                <p class="education-school">Institut Supérieur d'Informatique</p>
+                <p class="education-desc">Formation complète en programmation, algorithmique et développement logiciel.</p>
+            </div>
+            
+            <div class="education-card">
+                <div class="education-date">2018</div>
+                <h3 class="education-degree">Certification UX/UI Design</h3>
+                <p class="education-school">Design Academy</p>
+                <p class="education-desc">Formation intensive en conception d'interfaces utilisateur et expérience utilisateur.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2 class="section-title">Contact</h2>
+        
+        <form class="contact-form" id="contact-form">
+            <div class="form-group">
+                <label for="name" class="form-label">Nom</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="subject" class="form-label">Sujet</label>
+                <input type="text" id="subject" name="subject" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="message" class="form-label">Message</label>
+                <textarea id="message" name="message" class="form-control" required></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Envoyer le message</button>
+        </form>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <p class="copyright">&copy; 2025 Portfolio. Tous droits réservés.</p>
+    </footer>
+    
+    <!-- FontAwesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    
+    <script>
+        // Terminal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const terminalBody = document.getElementById('terminal-body');
+            const startingText = document.getElementById('starting-text');
+            
+            // Initial typing animation
+            const typed = new Typed('#starting-text', {
+                strings: ['help'],
+                typeSpeed: 80,
+                showCursor: false,
+                onComplete: function() {
+                    setTimeout(() => {
+                        displayCommandOutput('help');
+                        displayPrompt();
+                    }, 500);
+                }
+            });
+            
+            function displayPrompt() {
+                const promptLine = document.createElement('div');
+                promptLine.className = 'terminal-line';
+                
+                const prompt = document.createElement('span');
+                prompt.className = 'terminal-prompt';
+                prompt.innerHTML = '<span class="terminal-user">user</span><span class="terminal-at">@</span><span class="terminal-machine">portfolio</span><span class="terminal-path">~</span><span>$</span> ';
+                
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'command-input';
+                input.autocomplete = 'off';
+                input.autofocus = true;
+                
+                promptLine.appendChild(prompt);
+                promptLine.appendChild(input);
+                terminalBody.appendChild(promptLine);
+                
+                input.focus();
+                
+                // Scroll to bottom
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+                
+                // Handle command input
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        const command = this.value.trim();
+                        this.disabled = true;
+                        
+                        // Replace input with text
+                        const textNode = document.createTextNode(command);
+                        promptLine.replaceChild(textNode, input);
+                        
+                        // Process command
+                        if (command) {
+                            displayCommandOutput(command);
+                        }
+                        
+                        // Create new prompt line
+                        setTimeout(displayPrompt, 100);
+                    }
+                });
+            }
+            
+            function displayCommandOutput(command) {
+                const outputLine = document.createElement('div');
+                outputLine.className = 'terminal-output';
+                
+                // Check for easter eggs first
+                const easterEggResponse = getEasterEggResponse(command.toLowerCase());
+                if (easterEggResponse) {
+                    outputLine.innerHTML = `<p>${easterEggResponse}</p>`;
+                    terminalBody.appendChild(outputLine);
+                    terminalBody.scrollTop = terminalBody.scrollHeight;
+                    return;
+                }
+                
+                // Process regular commands
+                switch(command.toLowerCase()) {
+                    case 'help':
+                        outputLine.innerHTML = `
+                            <p>Commandes disponibles:</p>
+                            <p>- <span style="color: var(--terminal-green)">whois</span>: Affiche les informations personnelles</p>
+                            <p>- <span style="color: var(--terminal-green)">skills</span>: Liste des compétences</p>
+                            <p>- <span style="color: var(--terminal-green)">projects</span>: Affiche les projets récents</p>
+                            <p>- <span style="color: var(--terminal-green)">contact</span>: Informations de contact</p>
+                            <p>- <span style="color: var(--terminal-green)">clear</span>: Efface le terminal</p>
+                        `;
+                        break;
+                        
+                    case 'whois':
+                        outputLine.innerHTML = `
+                            <p>👋 Bonjour! Je suis John Doe, un développeur web passionné avec plus de 5 ans d'expérience.</p>
+                            <p>Je me spécialise dans la création d'expériences web modernes, intuitives et performantes.</p>
+                            <p>Mon objectif est de construire des interfaces utilisateur qui sont non seulement 
+                            esthétiquement plaisantes mais aussi fonctionnelles et accessibles.</p>
+                        `;
+                        break;
+                        
+                    case 'skills':
+                        outputLine.innerHTML = `
+                            <p><span style="color: var(--terminal-blue)">Languages:</span> HTML, CSS, JavaScript, TypeScript, PHP, Python</p>
+                            <p><span style="color: var(--terminal-blue)">Frameworks:</span> React, Vue.js, Angular, Node.js, Express, Laravel</p>
+                            <p><span style="color: var(--terminal-blue)">Outils:</span> Git, Docker, Webpack, Figma, Adobe XD, VS Code</p>
+                            <p><span style="color: var(--terminal-blue)">Autres:</span> UI/UX Design, Responsive Design, Progressive Web Apps, SEO</p>
+                        `;
+                        break;
+                        
+                    case 'projects':
+                        outputLine.innerHTML = `
+                            <p>Projets récents:</p>
+                            <p>- <span style="color: var(--terminal-yellow)">E-commerce Platform</span>: Site e-commerce full-stack avec gestion de produits, panier, paiements et tableau de bord administrateur</p>
+                            <p>- <span style="color: var(--terminal-yellow)">Social Media Dashboard</span>: Application React avec statistiques en temps réel et visualisation de données</p>
+                            <p>- <span style="color: var(--terminal-yellow)">Restaurant Booking System</span>: Système de réservation avec authentification, notifications et gestion des tables</p>
+                            <p>Tapez <span style="color: var(--terminal-green)">project [nom]</span> pour plus de détails</p>
+                        `;
+                        break;
+                        
+                    case 'project e-commerce platform':
+                    case 'project e-commerce':
+                        outputLine.innerHTML = `
+                            <p><span style="color: var(--terminal-yellow)">E-commerce Platform</span></p>
+                            <p><span style="color: var(--terminal-blue)">Technologies:</span> React, Node.js, MongoDB, Stripe API</p>
+                            <p><span style="color: var(--terminal-blue)">Caractéristiques:</span> Système de panier, passerelle de paiement, gestion des utilisateurs, tableau de bord administrateur</p>
+                            <p><span style="color: var(--terminal-blue)">Contribution:</span> Architecture du système, développement frontend et backend, intégration de l'API de paiement</p>
+                            <p><a href="#" style="color: var(--terminal-green)">Voir le projet →</a></p>
+                        `;
+                        break;
+                        
+                    case 'project social media dashboard':
+                    case 'project social media':
+                        outputLine.innerHTML = `
+                            <p><span style="color: var(--terminal-yellow)">Social Media Dashboard</span></p>
+                            <p><span style="color: var(--terminal-blue)">Technologies:</span> React, D3.js, Firebase, Material UI</p>
+                            <p><span style="color: var(--terminal-blue)">Caractéristiques:</span> Visualisations de données en temps réel, tableaux de bord personnalisables, rapports exportables</p>
+                            <p><span style="color: var(--terminal-blue)">Contribution:</span> Conception UX/UI, développement des visualisations D3.js, intégration avec les API sociales</p>
+                            <p><a href="#" style="color: var(--terminal-green)">Voir le projet →</a></p>
+                        `;
+                        break;
+                        
+                    case 'project restaurant booking system':
+                    case 'project restaurant':
+                        outputLine.innerHTML = `
+                            <p><span style="color: var(--terminal-yellow)">Restaurant Booking System</span></p>
+                            <p><span style="color: var(--terminal-blue)">Technologies:</span> Vue.js, Laravel, MySQL, Twilio API</p>
+                            <p><span style="color: var(--terminal-blue)">Caractéristiques:</span> Système de réservation, notifications par SMS, gestion des tables, profils clients</p>
+                            <p><span style="color: var(--terminal-blue)">Contribution:</span> Développement full-stack, conception de la base de données, intégration des notifications</p>
+                            <p><a href="#" style="color: var(--terminal-green)">Voir le projet →</a></p>
+                        `;
+                        break;
+                        
+                    case 'contact':
+                        outputLine.innerHTML = `
+                            <p>Vous pouvez me contacter via:</p>
+                            <p>- <span style="color: var(--terminal-green)">Email:</span> 0x1tsjusthisham@gmail.com</p>
+                            <p>- <span style="color: var(--terminal-green)">LinkedIn:</span> linkedin.com/in/johndoe</p>
+                            <p>- <span style="color: var(--terminal-green)">GitHub:</span> github.com/johndoe</p>
+                            <p>Ou utilisez le formulaire de contact en bas de page!</p>
+                        `;
+                        break;
+                        
+                    case 'clear':
+                        // Handled separately below
+                        break;
+                        
+                    // Additional commands
+                    case 'ls':
+                    case 'dir':
+                        outputLine.innerHTML = `
+                            <p><span style="color: var(--terminal-blue)">portfolio/</span></p>
+                            <p>├── <span style="color: var(--terminal-yellow)">about.md</span></p>
+                            <p>├── <span style="color: var(--terminal-yellow)">projects.json</span></p>
+                            <p>├── <span style="color: var(--terminal-yellow)">skills.txt</span></p>
+                            <p>└── <span style="color: var(--terminal-yellow)">contact.md</span></p>
+                        `;
+                        break;
+                        
+                    case 'date':
+                        const date = new Date();
+                        outputLine.innerHTML = `<p>${date.toDateString()} ${date.toLocaleTimeString()}</p>`;
+                        break;
+                        
+                    default:
+                        if (command.startsWith('echo ')) {
+                            const message = command.substring(5);
+                            outputLine.innerHTML = `<p>${message}</p>`;
+                        } else {
+                            outputLine.innerHTML = `<p>Commande non reconnue: ${command}. Tapez 'help' pour voir les commandes disponibles.</p>`;
+                        }
+                }
+                
+                terminalBody.appendChild(outputLine);
+                
+                if (command.toLowerCase() === 'clear') {
+                    // Clear all lines except the first one
+                    while (terminalBody.children.length > 1) {
+                        terminalBody.removeChild(terminalBody.lastChild);
+                    }
+                }
+                
+                // Scroll to the bottom of the terminal
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            }
+            
+            // Function for easter egg responses
+            function getEasterEggResponse(command) {
+                const easterEggs = {
+                    'hello': 'Bonjour! Comment puis-je vous aider aujourd\'hui?',
+                    'hi': 'Salut! Ravi de vous rencontrer!',
+                    'ping': 'pong!',
+                    'sudo': 'Hmm, bel essai! Mais vous n\'avez pas les droits administrateur ici 😉',
+                    'exit': 'Vous ne pouvez pas quitter ce terminal. Il est trop cool pour ça!',
+                    'matrix': 'Désolé, je n\'ai pas de pilule rouge ou bleue à vous offrir...',
+                    'coffee': '☕ Voilà votre café! Coding fuel: rechargé.'
+                };
+                
+                return easterEggs[command] || null;
+            }
+            
+            // Initial focus
+            document.addEventListener('click', function() {
+                const input = document.querySelector('.command-input');
+                if (input) {
+                    input.focus();
+                }
+            });
+            
+            // Animation for timeline items
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Timeline animations
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            timelineItems.forEach((item, index) => {
+                gsap.to(item, {
+                    scrollTrigger: {
+                        trigger: item,
+                        start: "top 80%",
+                        toggleClass: {targets: item, className: "reveal"},
+                        once: true
+                    },
+                    duration: 0.6,
+                    delay: index * 0.2
+                });
+            });
+            
+            // Testimonial card animations
+            const testimonialCards = document.querySelectorAll('.testimonial-card');
+            testimonialCards.forEach((card, index) => {
+                gsap.to(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 80%",
+                        toggleClass: {targets: card, className: "reveal"},
+                        once: true
+                    },
+                    duration: 0.5,
+                    delay: index * 0.2
+                });
+            });
+            
+            // Education card animations
+            const educationCards = document.querySelectorAll('.education-card');
+            educationCards.forEach((card, index) => {
+                gsap.to(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 80%",
+                        toggleClass: {targets: card, className: "reveal"},
+                        once: true
+                    },
+                    duration: 0.5,
+                    delay: index * 0.2
+                });
+            });
+            
+            // Contact form submission
+            const contactForm = document.getElementById('contact-form');
+            
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get form data
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const subject = document.getElementById('subject').value;
+                    const message = document.getElementById('message').value;
+                    
+                    // Format email content
+                    const emailContent = `
+Nom: ${name}
+Email: ${email}
+Sujet: ${subject}
+Message: ${message}
+Date: ${new Date().toLocaleString()}
+                    `;
+                    
+                    // Here we would normally send the data to a server
+                    console.log('Email content to be sent to 0x1tsjusthisham@gmail.com:', emailContent);
+                    
+                    // In a real implementation, this would send to the email address:
+                    // 0x1tsjusthisham@gmail.com
+                    
+                    // Show success message
+                    alert('Message envoyé avec succès à 0x1tsjusthisham@gmail.com!');
+                    
+                    // Reset form
+                    contactForm.reset();
+                });
+            }
+            
+            // Handle window resizing
+            window.addEventListener('resize', function() {
+                // Adjust terminal height on mobile
+                if (window.innerWidth <= 768) {
+                    const terminal = document.querySelector('.terminal');
+                    if (terminal) {
+                        terminal.style.height = '300px';
+                    }
+                } else {
+                    const terminal = document.querySelector('.terminal');
+                    if (terminal) {
+                        terminal.style.height = '350px';
+                    }
+                }
+            });
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
